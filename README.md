@@ -32,22 +32,6 @@ python model.py
 
 You will be prompted to enter the model type (`RNN` or `LSTM`).
 
-### 📂 Load a Saved Model
-
-To load a previously saved model, run:
-
-```sh
-python model_saving.py <model_filename>
-```
-
-Replace `<model_filename>` with the name of your saved model file.
-
-## 📊 Dataset
-
-The dataset consists of sequences of random integers, and the target output is their sum. It is generated synthetically using `dataset_generation.py`.
-
-## 📦 Dependencies
-
 This project requires the following libraries:
 
 - `TensorFlow`
