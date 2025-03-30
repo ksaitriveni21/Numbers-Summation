@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numbers Summation - RNN/LSTM</title>
+    <title>Number Summation Prediction</title>
 </head>
 <body>
-    <h1>Predict Summation using RNN/LSTM</h1>
+    <h2>Enter a sequence of three numbers (comma-separated):</h2>
     <form method="POST">
-        <label>Enter numbers (comma-separated):</label>
-        <input type="text" name="numbers" required>
+        <input type="text" name="sequence" required>
+        <br><br>
+        <label>Select Model:</label>
+        <select name="model">
+            <option value="RNN">Simple RNN</option>
+            <option value="LSTM">LSTM</option>
+        </select>
+        <br><br>
         <button type="submit">Predict</button>
     </form>
-    {% if result %}
-        <h2>Prediction: {{ result }}</h2>
+
+    {% if prediction is not none %}
+        <h3>Predicted Sum ({{ model }}): {{ prediction }}</h3>
     {% endif %}
 </body>
 </html>
