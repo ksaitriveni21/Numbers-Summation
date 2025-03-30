@@ -1,29 +1,35 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 
-# Load your trained model
-model = load_model("numbers_model.h5")
-
-def predict_sum(sequence):
-    sequence = np.array(sequence).reshape(1, -1, 1)  # Reshape for LSTM
-    prediction = model.predict(sequence)
-    return round(prediction[0][0], 2)
+# Load Trained Models
+rnn_model = tf.keras.models.load_model("numbers_model_rnn.h5")
+lstm_model = tf.keras.models.load_model("numbers_model_lstm.h5")
 
 @app.route("/", methods=["GET", "POST"])
-def home():
-    result = None
+def index():
+    prediction = None
+    selected_model = None
+
     if request.method == "POST":
-        try:
-            numbers = request.form["numbers"]
-            sequence = [int(num) for num in numbers.split(",")]
-            result = predict_sum(sequence)
-        except:
-            result = "Invalid input. Enter numbers separated by commas."
-    return render_template("index.html", result=result)
+        input_seq = request.form.get("sequence")  # Get input from form
+        model_type = request.form.get("model")  # Get selected model
+
+        if input_seq:
+            # Convert input to numpy array
+            num_list = np.array([int(num) for num in input_seq.split(",")]).reshape(1, 3, 1)
+
+            # Predict using the selected model
+            if model_type == "RNN":
+                prediction = rnn_model.predict(num_list)[0][0]
+                selected_model = "Simple RNN"
+            else:
+                prediction = lstm_model.predict(num_list)[0][0]
+                selected_model = "LSTM"
+
+    return render_template("index.html", prediction=prediction, model=selected_model)
 
 if __name__ == "__main__":
     app.run(debug=True)
