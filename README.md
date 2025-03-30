@@ -1,43 +1,66 @@
 # Numbers-Summation
+
 This project implements a simple number summation task using Recurrent Neural Networks (RNN) and Long Short-Term Memory (LSTM) models.
 
-Project Structure
+## 📂 Project Structure
 
-train.py – Trains the model.
+The repository contains the following files:
 
-dataset_generation.py – Generates synthetic dataset.
+- **`train.py`** – Trains the model.
+- **`dataset_generation.py`** – Generates a synthetic dataset.
+- **`model_saving.py`** – Saves and loads trained models.
+- **`requirements.txt`** – Lists dependencies required to run the project.
+- **`README.md`** – Project documentation.
 
-model_saving.py – Saves and loads trained models.
+## 📥 Installation
 
-requirements.txt – Lists dependencies.
+Before running the project, install the required dependencies:
 
-README.md – Project documentation.
-
-Installation
-
+```sh
 pip install -r requirements.txt
+```
 
-Running the Project
+## 🚀 Running the Project
 
-Train the Model
+### 🏋️ Train the Model
 
+To train the model, run:
+
+```sh
 python train.py
+```
 
-You will be prompted to enter the model type (RNN or LSTM).
+You will be prompted to enter the model type (`RNN` or `LSTM`).
 
-Load a Saved Model
+### 📂 Load a Saved Model
 
+To load a previously saved model, run:
+
+```sh
 python model_saving.py <model_filename>
+```
 
-Dataset
+Replace `<model_filename>` with the name of your saved model file.
 
-The dataset consists of sequences of random integers, and the target output is their sum.
+## 📊 Dataset
 
-Dependencies
+The dataset consists of sequences of random integers, and the target output is their sum. It is generated synthetically using `dataset_generation.py`.
 
-TensorFlow
+## 📦 Dependencies
 
-NumPy
+This project requires the following libraries:
 
-Scikit-learn
+- `TensorFlow`
+- `NumPy`
+- `Scikit-learn`
+
+Ensure that these dependencies are installed before running the scripts.
+
+## 📜 License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+Feel free to contribute or raise any issues if needed! 🚀
 
