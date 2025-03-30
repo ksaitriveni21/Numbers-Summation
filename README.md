@@ -56,11 +56,5 @@ This project requires the following libraries:
 
 Ensure that these dependencies are installed before running the scripts.
 
-## 📜 License
-
-This project is open-source and available under the [MIT License](LICENSE).
-
----
-
 Feel free to contribute or raise any issues if needed! 🚀
 
