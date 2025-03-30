@@ -6,7 +6,7 @@ This project implements a simple number summation task using Recurrent Neural Ne
 
 The repository contains the following files:
 
-- **`train.py`** – Trains the model.
+- **`model.py`** – Trains the model.
 - **`dataset_generation.py`** – Generates a synthetic dataset.
 - **`model_saving.py`** – Saves and loads trained models.
 - **`requirements.txt`** – Lists dependencies required to run the project.
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 To train the model, run:
 
 ```sh
-python train.py
+python model.py
 ```
 
 You will be prompted to enter the model type (`RNN` or `LSTM`).
