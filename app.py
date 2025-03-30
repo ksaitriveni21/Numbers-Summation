@@ -31,6 +31,8 @@ def index():
 
     return render_template("index.html", prediction=prediction, model=selected_model)
 
+import os
+
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Render requires an open port
-    app.run(host="0.0.0.0", port=port, debug=False)
+    port = int(os.environ.get("PORT", 5000))  # Use Render's assigned PORT
+    app.run(host="0.0.0.0", port=port, debug=True)
