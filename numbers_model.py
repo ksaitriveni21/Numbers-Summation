@@ -42,7 +42,7 @@ rnn_model = Sequential([
     Dense(1)  
 ])
 
-rnn_model.compile(optimizer=Adam(learning_rate=0.005), loss='mse', metrics=['mae'])
+rnn_model.compile(optimizer=Adam(learning_rate=0.005), loss=tf.keras.losses.MeanSquaredError(), metrics=['mae'])
 
 print("Training RNN model...")
 history_rnn = rnn_model.fit(X_train, y_train, epochs=20, batch_size=64, 
@@ -59,7 +59,7 @@ lstm_model = Sequential([
     Dense(1)  
 ])
 
-lstm_model.compile(optimizer=Adam(learning_rate=0.005), loss='mse', metrics=['mae'])
+lstm_model.compile(optimizer=Adam(learning_rate=0.005), loss=tf.keras.losses.MeanSquaredError(), metrics=['mae'])
 
 print("Training LSTM model...")
 history_lstm = lstm_model.fit(X_train, y_train, epochs=20, batch_size=64, 
