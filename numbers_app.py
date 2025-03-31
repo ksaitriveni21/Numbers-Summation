@@ -2,6 +2,8 @@
 # coding: utf-8
 
 # In[4]:
+#!/usr/bin/env python
+# coding: utf-8
 
 from flask import Flask, render_template, request
 import os
@@ -48,6 +50,7 @@ def index():
                     error = "Invalid model type selected."
                     return render_template("numbers_index.html", error=error, prediction=prediction)
 
+                # Load the selected model
                 model = load_model(model_path)
 
                 if isinstance(model, str):  # If model loading failed
@@ -56,7 +59,15 @@ def index():
                     # Make prediction
                     prediction = model.predict(X_input)[0][0] * 10  # Rescale to original scale
             except Exception as e:
-                error = f"
+                error = f"Error processing request: {str(e)}"
+    
+    return render_template("numbers_index.html", error=error, prediction=prediction)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 10000))  # Dynamic port for Render
+    app.run(host="0.0.0.0", port=port)
+
+
 
 # In[ ]:
 
