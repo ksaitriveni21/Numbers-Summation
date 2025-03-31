@@ -9,6 +9,7 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import SimpleRNN, LSTM, Dense
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import MeanSquaredError
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -76,8 +77,9 @@ print("Training histories saved.")
 
 # In[ ]:
 # Load Trained Models
-rnn_model = tf.keras.models.load_model("numbers_model_rnn.h5")
-lstm_model = tf.keras.models.load_model("numbers_model_lstm.h5")
+rnn_model = tf.keras.models.load_model("numbers_model_rnn.h5", custom_objects={"mse": MeanSquaredError()})
+lstm_model = tf.keras.models.load_model("numbers_model_lstm.h5", custom_objects={"mse": MeanSquaredError()})
+
 
 def predict(sequence, model_type="RNN"):
     """
