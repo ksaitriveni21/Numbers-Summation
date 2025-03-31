@@ -5,36 +5,30 @@
 
 
 from flask import Flask, render_template, request
-import os
+from numbers_model import predict  # Import predict function
 
 app = Flask(__name__)
-
-def predict_sum(sequence, model):
-    try:
-        numbers = list(map(int, sequence.split(',')))
-        return sum(numbers)  
-    except ValueError:
-        return None
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     error = None
     prediction = None
-    model = None
-    
+    model_type = "RNN"  # Default model type
+
     if request.method == "POST":
         sequence = request.form.get("sequence")
-        model = request.form.get("model")
+        model_type = request.form.get("model", "RNN")
 
         if sequence:
-            prediction = predict_sum(sequence, model)
-            if prediction is None:
-                error = "Invalid input! Please enter three numbers separated by commas."
+            prediction = predict(sequence, model_type)
+            if isinstance(prediction, str) and "Error" in prediction:
+                error = prediction
 
-    return render_template("numbers_index.html", error=error, prediction=prediction, model=model)
+    return render_template("numbers_index.html", error=error, prediction=prediction, model=model_type)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(debug=True, host="0.0.0.0", port=5000)
+
 
 
 # In[ ]:
