@@ -16,7 +16,7 @@ app = Flask(__name__)  # Ensure Flask app is defined before using @app.route
 def load_model(model_name):
     try:
         # Attempt to load the model without compilation to avoid issues with custom objects
-        model = tf.keras.models.load_model(model_name, compile=False)
+        model = tf.keras.models.load_model(model_name, compile=False, custom_objects={"SimpleRNN": tf.keras.layers.SimpleRNN})
         model.compile(optimizer="adam", loss="mean_squared_error", metrics=["mae"])
         return model
     except Exception as e:
