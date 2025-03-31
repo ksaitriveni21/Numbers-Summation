@@ -49,8 +49,8 @@ print("Training RNN model...")
 history_rnn = rnn_model.fit(X_train, y_train, epochs=20, batch_size=64, 
                             validation_data=(X_val, y_val), verbose=1)
 
-rnn_model.save("numbers_model_rnn.h5")
-print("RNN Model saved as 'numbers_model_rnn.h5'")
+rnn_model.save("numbers_model_RNN.h5")
+print("RNN Model saved as 'numbers_model_RNN.h5'")
 
 # Define LSTM Model
 lstm_model = Sequential([
@@ -66,8 +66,8 @@ print("Training LSTM model...")
 history_lstm = lstm_model.fit(X_train, y_train, epochs=20, batch_size=64, 
                               validation_data=(X_val, y_val), verbose=1)
 
-lstm_model.save("numbers_model_lstm.h5")
-print("LSTM Model saved as 'numbers_model_lstm.h5'")
+lstm_model.save("numbers_model_LSTM.h5")
+print("LSTM Model saved as 'numbers_model_LSTM.h5'")
 
 # Save Training Histories for Future Analysis
 np.save("rnn_history.npy", history_rnn.history)
@@ -77,8 +77,8 @@ print("Training histories saved.")
 
 # In[ ]:
 # Load Trained Models
-rnn_model = tf.keras.models.load_model("numbers_model_rnn.h5", custom_objects={"mse": MeanSquaredError()})
-lstm_model = tf.keras.models.load_model("numbers_model_lstm.h5", custom_objects={"mse": MeanSquaredError()})
+rnn_model = tf.keras.models.load_model("numbers_model_RNN.h5", custom_objects={"mse": MeanSquaredError()})
+lstm_model = tf.keras.models.load_model("numbers_model_LSTM.h5", custom_objects={"mse": MeanSquaredError()})
 
 
 def predict(sequence, model_type="RNN"):
