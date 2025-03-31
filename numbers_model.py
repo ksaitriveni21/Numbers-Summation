@@ -75,6 +75,36 @@ print("Training histories saved.")
 
 
 # In[ ]:
+# Load Trained Models
+rnn_model = tf.keras.models.load_model("numbers_model_rnn.h5")
+lstm_model = tf.keras.models.load_model("numbers_model_lstm.h5")
+
+def predict(sequence, model_type="RNN"):
+    """
+    Predicts the sum of a sequence using the specified model.
+    
+    Args:
+    - sequence (str): A comma-separated string of three numbers.
+    - model_type (str): "RNN" or "LSTM" (default: "RNN").
+    
+    Returns:
+    - float: Predicted sum.
+    """
+    try:
+        # Convert input sequence to numpy array
+        numbers = np.array(list(map(int, sequence.split(',')))).reshape(1, 3, 1) / 10.0
+        
+        # Select model
+        model = rnn_model if model_type == "RNN" else lstm_model
+        
+        # Make prediction
+        prediction = model.predict(numbers)
+        
+        # Convert back to original scale
+        return round(float(prediction[0]) * 10, 2)
+    
+    except Exception as e:
+        return f"Error: {str(e)}"
 
 
 
