@@ -1,12 +1,15 @@
+html_code = """
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Summation Prediction</title>
 </head>
 <body>
     <h2>Enter a sequence of three numbers (comma-separated):</h2>
     <form method="POST">
-        <input type="text" name="sequence" required>
+        <input type="text" name="sequence" required pattern="^[-\\d]+,\\s*[-\\d]+,\\s*[-\\d]+$" title="Enter three numbers separated by commas">
         <br><br>
         <label>Select Model:</label>
         <select name="model">
@@ -16,9 +19,12 @@
         <br><br>
         <button type="submit">Predict</button>
     </form>
-
-    {% if prediction is not none %}
-        <h3>Predicted Sum ({{ model }}): {{ prediction }}</h3>
-    {% endif %}
 </body>
 </html>
+"""
+
+# Save the file
+with open("numbers_index.html", "w") as file:
+    file.write(html_code)
+
+print("HTML file saved successfully!")
