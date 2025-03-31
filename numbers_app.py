@@ -8,12 +8,13 @@ import os
 import numpy as np
 import tensorflow as tf
 
-app = Flask(__name__)  # ✅ Ensure Flask app is defined before using @app.route
+app = Flask(__name__)  # Ensure Flask app is defined before using @app.route
 
 # Function to load model safely
 def load_model(model_name):
     try:
-        model = tf.keras.models.load_model(model_name, compile=False)  # ✅ Avoid 'mse' issue
+        # Attempt to load the model without compilation to avoid issues with custom objects
+        model = tf.keras.models.load_model(model_name, compile=False)
         model.compile(optimizer="adam", loss="mean_squared_error", metrics=["mae"])
         return model
     except Exception as e:
@@ -30,24 +31,32 @@ def index():
 
         if sequence:
             try:
+                # Parse and reshape the sequence
                 numbers = list(map(int, sequence.split(',')))
-                X_input = np.array(numbers).reshape((1, 3, 1)) / 10.0  
+                if len(numbers) != 3:
+                    error = "Please enter exactly three numbers."
+                    return render_template("numbers_index.html", error=error, prediction=prediction)
 
-                model_path = f"numbers_model_{model_type}.h5"  # Model filename based on user input
+                X_input = np.array(numbers).reshape((1, 3, 1)) / 10.0  # Normalize the input
+                
+                # Dynamically load the model based on user selection
+                if model_type == "RNN":
+                    model_path = "numbers_model_rnn.h5"  # Correct model filename for RNN
+                elif model_type == "LSTM":
+                    model_path = "numbers_model_lstm.h5"  # Correct model filename for LSTM
+                else:
+                    error = "Invalid model type selected."
+                    return render_template("numbers_index.html", error=error, prediction=prediction)
+
                 model = load_model(model_path)
 
                 if isinstance(model, str):  # If model loading failed
                     error = f"Model loading error: {model}"
                 else:
-                    prediction = model.predict(X_input)[0][0] * 10  
+                    # Make prediction
+                    prediction = model.predict(X_input)[0][0] * 10  # Rescale to original scale
             except Exception as e:
-                error = f"Error processing request: {str(e)}"
-    
-    return render_template("numbers_index.html", error=error, prediction=prediction)
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # ✅ Dynamic port for Render
-    app.run(host="0.0.0.0", port=port)
+                error = f"
 
 # In[ ]:
 
