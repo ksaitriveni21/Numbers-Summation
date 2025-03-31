@@ -7,17 +7,29 @@
 </head>
 <body>
     <h2>Enter a sequence of three numbers (comma-separated):</h2>
+    
     <form method="POST">
         <input type="text" name="sequence" required pattern="^[-\\d]+,\\s*[-\\d]+,\\s*[-\\d]+$" title="Enter three numbers separated by commas">
         <br><br>
+        
         <label>Select Model:</label>
         <select name="model">
             <option value="RNN">Simple RNN</option>
             <option value="LSTM">LSTM</option>
         </select>
         <br><br>
+        
         <button type="submit">Predict</button>
     </form>
+
+    <!-- Display Prediction Result -->
+    {% if prediction is not none %}
+        <h3>Predicted Sum: {{ prediction }}</h3>
+    {% endif %}
+
+    <!-- Display Errors -->
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
 </body>
 </html>
-
