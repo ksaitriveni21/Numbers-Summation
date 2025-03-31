@@ -27,8 +27,9 @@ def index():
     return render_template("numbers_index.html", error=error, prediction=prediction, model=model_type)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
-
+    import os
+    port = int(os.environ.get("PORT", 10000))  # Render uses a dynamic port
+    app.run(host="0.0.0.0", port=port)
 
 
 # In[ ]:
