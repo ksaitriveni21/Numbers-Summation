@@ -2,25 +2,24 @@
 # coding: utf-8
 
 # In[4]:
-#!/usr/bin/env python
-# coding: utf-8
-
 from flask import Flask, render_template, request
 import os
 import numpy as np
 import tensorflow as tf
 
-app = Flask(__name__)  # Ensure Flask app is defined before using @app.route
+app = Flask(__name__)  # Define Flask app
 
-# Function to load model safely
-def load_model(model_name):
+# Function to safely load a model
+def load_model(model_path):
     try:
-        # Attempt to load the model without compilation to avoid issues with custom objects
-        model = tf.keras.models.load_model(model_name, compile=False, custom_objects={"SimpleRNN": tf.keras.layers.SimpleRNN})
+        if not os.path.exists(model_path):
+            return f"Error: Model file '{model_path}' not found."
+
+        model = tf.keras.models.load_model(model_path, compile=False)  # Load without custom objects
         model.compile(optimizer="adam", loss="mean_squared_error", metrics=["mae"])
         return model
     except Exception as e:
-        return str(e)
+        return f"Model loading error: {str(e)}"
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -33,40 +32,36 @@ def index():
 
         if sequence:
             try:
-                # Parse and reshape the sequence
                 numbers = list(map(int, sequence.split(',')))
+
                 if len(numbers) != 3:
                     error = "Please enter exactly three numbers."
                     return render_template("numbers_index.html", error=error, prediction=prediction)
 
-                X_input = np.array(numbers).reshape((1, 3, 1)) / 10.0  # Normalize the input
-                
-                # Dynamically load the model based on user selection
-                if model_type == "RNN":
-                    model_path = "numbers_model_rnn.h5"  # Correct model filename for RNN
-                elif model_type == "LSTM":
-                    model_path = "numbers_model_lstm.h5"  # Correct model filename for LSTM
-                else:
+                X_input = np.array(numbers).reshape((1, 3, 1)) / 10.0 
+
+                model_files = {"RNN": "numbers_model_rnn.h5", "LSTM": "numbers_model_lstm.h5"}
+                model_path = model_files.get(model_type)
+
+                if not model_path:
                     error = "Invalid model type selected."
                     return render_template("numbers_index.html", error=error, prediction=prediction)
 
-                # Load the selected model
                 model = load_model(model_path)
 
-                if isinstance(model, str):  # If model loading failed
-                    error = f"Model loading error: {model}"
+                if isinstance(model, str): 
+                    error = model
                 else:
-                    # Make prediction
-                    prediction = model.predict(X_input)[0][0] * 10  # Rescale to original scale
+                    prediction = model.predict(X_input)[0][0] * 10 
+
             except Exception as e:
                 error = f"Error processing request: {str(e)}"
-    
+
     return render_template("numbers_index.html", error=error, prediction=prediction)
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))  # Dynamic port for Render
+    port = int(os.environ.get("PORT", 10000))  
     app.run(host="0.0.0.0", port=port)
-
 
 
 # In[ ]:
