@@ -34,8 +34,8 @@ y_train, y_val = y_train / 10.0, y_val / 10.0
 
 # Define RNN Model
 rnn_model = Sequential([
-    SimpleRNN(50, return_sequences=True, input_shape=(3, 1)),
-    SimpleRNN(50),
+    SimpleRNN(50, return_sequences=True, input_shape=(3, 1), activation='relu'),
+    SimpleRNN(50, activation='relu'),
     Dense(25, activation='relu'),
     Dense(1)
 ])
